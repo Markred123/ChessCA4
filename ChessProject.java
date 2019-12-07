@@ -39,6 +39,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
     AIAgent agent;
     Boolean agentwins;
     Stack temporary;
+    public static int n;
 
 
     public ChessProject(){
@@ -184,7 +185,7 @@ private Stack getWhitePawnSquares(int x, int y, String piece){
         validwpMove3 = new  Move(startingSquare1, tSquare1);
         if(piecePresent(((tSquare1.getXC()*75)+20), (((tSquare1.getYC()*75 )+20 )))){
           if(checkWhiteOponent(((tSquare1.getXC()*75)+20),(((tSquare1.getYC()*75)+20)))){
-            moves.push(validwpMove2);
+            moves.push(validwpMove3);
           }
         }
       }
@@ -854,7 +855,7 @@ private void getLandingSquares(Stack found){
     }
     return squares;
   }
-  private Stack getWhiteAttackingSquares(Stack pieces){
+  /*private Stack getWhiteAttackingSquares(Stack pieces){
     while(!pieces.empty()){
       Square s = (Square)pieces.pop();
       String tmpString = s.getName();
@@ -869,7 +870,7 @@ private void getLandingSquares(Stack found){
 
       }
     }
-  }
+  }*/
 
 	/*
 		This method checks if there is a piece present on a particular square.
@@ -1002,7 +1003,13 @@ private void printStack(Stack input){
       }
        System.out.println("=============================================================");
        Border redBorder = BorderFactory.createLineBorder(Color.RED, 3);
-       Move selectedMove = agent.randomMove(testing);
+       Move selectedMove = null;
+       if(n==1){
+       selectedMove = agent.nextBestMove(testing, black);
+        }
+      else{
+        selectedMove= agent.randomMove(testing);
+      }
        Square startingPoint = (Square)selectedMove.getStart();
        Square landingPoint = (Square)selectedMove.getLanding();
        int startX1 = (startingPoint.getXC()*75)+20;
@@ -1705,6 +1712,9 @@ private void printStack(Stack input){
                  if(yMovement==2){
                    if((!piecePresent(e.getX(), (e.getY())))&&(!piecePresent(e.getX(), (e.getY()-75)))){
                      validMove = true;
+                     if(startY == 6){
+                       success = true;
+                     }
                    }
                  }
                  else{
@@ -1858,8 +1868,12 @@ private void printStack(Stack input){
         frame.setLocationRelativeTo( null );
         frame.setVisible(true);
         Object[] options = {"Random Moves","Best Next Move","Based on Opponents Moves"};
-        int n = JOptionPane.showOptionDialog(frame,"Lets play some Chess, choose your AI opponent","Introduction to AI Continuous Assessment", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[2]);
+        n = JOptionPane.showOptionDialog(frame,"Lets play some Chess, choose your AI opponent","Introduction to AI Continuous Assessment", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[2]);
         System.out.println("The selected variable is : "+n);
+        if(n == 0){
+        String  gameMode = "randomMove(testing, black)";
+        }
+
         frame.makeAIMove();
   }
 }
