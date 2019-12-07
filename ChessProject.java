@@ -854,6 +854,22 @@ private void getLandingSquares(Stack found){
     }
     return squares;
   }
+  private Stack getWhiteAttackingSquares(Stack pieces){
+    while(!pieces.empty()){
+      Square s = (Square)pieces.pop();
+      String tmpString = s.getName();
+      if(tmpString.contains("Knight")){
+        tempK = getKnightMoves(s.getXC(), s.getYC(), s.getName());
+        while(!tempK.empty()){
+          Square tempKnight = (Square)tempK.pop();
+          knight.push(tempKnight);
+        }
+      }
+      else if(tmpString.contains("Bishop")){
+
+      }
+    }
+  }
 
 	/*
 		This method checks if there is a piece present on a particular square.
