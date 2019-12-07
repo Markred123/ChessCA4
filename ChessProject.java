@@ -830,6 +830,30 @@ private void getLandingSquares(Stack found){
     }
     return squares;
   }
+  private Stack findBlackPieces(){
+    Stack squares = new Stack();
+    String icon;
+    int x;
+    int y;
+    String pieceName;
+    for(int i=0;i < 600;i+=75){
+      for(int j=0;j < 600;j+=75){
+        y = i/75;
+        x=j/75;
+        Component tmp = chessBoard.findComponentAt(j, i);
+        if(tmp instanceof JLabel){
+          chessPiece = (JLabel)tmp;
+          icon = chessPiece.getIcon().toString();
+          pieceName = icon.substring(0, (icon.length()-4));
+          if(pieceName.contains("Black")){
+            Square stmp = new Square(x, y, pieceName);
+            squares.push(stmp);
+          }
+        }
+      }
+    }
+    return squares;
+  }
 
 	/*
 		This method checks if there is a piece present on a particular square.
@@ -892,6 +916,7 @@ private void printStack(Stack input){
     layeredPane.validate();
     layeredPane.repaint();
     Stack white = findWhitePieces();
+    Stack black = findBlackPieces();
     Stack completeMoves = new Stack();
     Move tmp;
     while(!white.empty()){
@@ -912,7 +937,7 @@ private void printStack(Stack input){
       else if(tmpString.contains("Bishop")){
         tmpMoves = getBishopMoves(s.getXC(), s.getYC(), s.getName());
       }
-    
+
       else if(tmpString.contains("Rook")){
        tmpMoves = getRookMoves(s.getXC(), s.getYC(), s.getName());
       }
